@@ -17,7 +17,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-async function run() {
+async function run() {    
   try {
     const database = client.db("UNILINK");
     const usersCollection = database.collection("users");
