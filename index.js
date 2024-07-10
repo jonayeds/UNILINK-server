@@ -110,6 +110,18 @@ async function run() {
       const result = await usersCollection.updateOne(filter, updatedUser)
       res.send(result)
     })
+    app.put('/post/update/:email' , async(req, res)=>{
+      const email = req.params.email
+      const query = req.body
+      const filter = {email : email }
+      const updatedUser  = {
+        $set:{
+          posts:  query.posts
+        }
+      }
+      const result = await usersCollection.updateOne(filter, updatedUser)
+      res.send(result)
+    })
 
     await client.connect();
     // Send a ping to confirm a successful connection
