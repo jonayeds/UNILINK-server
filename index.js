@@ -62,6 +62,14 @@ async function run() {
       const result = await usersCollection.findOne(query)
       res.send(result)
     })
+    app.get('/comments/:email/:id', async(req, res)=>{
+      const email = req.params.email
+      const postId = req.params.id
+      const queryA = {author : email}
+      const result = await commentsCollection.find(queryA).toArray()
+      const comments  = result.filter(comment=> comment.postId === parseInt(postId))
+      res.send(comments)
+    })
     app.put("/users/:email", async (req, res) => {
       const email = req.params.email;
       const filter = { email: email };
@@ -120,14 +128,13 @@ async function run() {
       const email = req.params.email
       const query = req.body
       const filter = {email : email }
-      console.log(query)
-      // const updatedUser  = {
-      //   $set:{
-      //     posts:  query.posts
-      //   }
-      // }
-      // const result = await usersCollection.updateOne(filter, updatedUser)
-      // res.send(result)
+      const updatedUser  = {
+        $set:{
+          posts:  query.posts
+        }
+      }
+      const result = await usersCollection.updateOne(filter, updatedUser)
+      res.send(result)
     })
    
     await client.connect();
