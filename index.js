@@ -22,6 +22,7 @@ async function run() {
   try {
     const database = client.db("UNILINK");
     const usersCollection = database.collection("users");
+    const commentsCollection= database.collection('comments')
     // Connect the client to the server	(optional starting in v4.7)
     app.post("/users", async (req, res) => {
       const user = req.body;
@@ -34,6 +35,11 @@ async function run() {
         res.send({ insertCount: 0 });
       }
     });
+    app.post('/comments', async  (req, res)=>{
+      const comment = req.body
+      const result = await  commentsCollection.insertOne(comment)
+      res.send(result)
+    })
     app.get("/users", async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
@@ -114,15 +120,16 @@ async function run() {
       const email = req.params.email
       const query = req.body
       const filter = {email : email }
-      const updatedUser  = {
-        $set:{
-          posts:  query.posts
-        }
-      }
-      const result = await usersCollection.updateOne(filter, updatedUser)
-      res.send(result)
+      console.log(query)
+      // const updatedUser  = {
+      //   $set:{
+      //     posts:  query.posts
+      //   }
+      // }
+      // const result = await usersCollection.updateOne(filter, updatedUser)
+      // res.send(result)
     })
-
+   
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
