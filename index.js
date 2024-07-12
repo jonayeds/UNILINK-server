@@ -2,7 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
-app.use(cors());
+app.use(cors({
+  origin: '*',
+}));
 app.use(express.json());
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
@@ -137,7 +139,7 @@ async function run() {
       res.send(result)
     })
    
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
