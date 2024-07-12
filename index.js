@@ -138,6 +138,14 @@ async function run() {
       const result = await usersCollection.updateOne(filter, updatedUser)
       res.send(result)
     })
+    app.delete('/comments/:id',  async(req, res)=>{
+      const commentId = req.params.id
+      const query = { commentId: commentId }
+
+      const result = await commentsCollection.deleteMany(query)
+      res.send(result)
+
+    })
    
     // await client.connect();
     // Send a ping to confirm a successful connection
