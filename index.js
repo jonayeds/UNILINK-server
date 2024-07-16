@@ -138,6 +138,19 @@ async function run() {
       const result = await usersCollection.updateOne(filter, updatedUser)
       res.send(result)
     })
+    app.put('/bookMark/:email',  async(req, res)=>{
+      const  email = req.params.email
+      const query = req.body
+      const filter = {email:  email}
+      const updatedBookMark = {
+        $set:{
+          bookMarks:query.bookMarks
+        }
+      } 
+      const result=  usersCollection.updateOne(filter, updatedBookMark)
+      res.send(result)
+
+    })
     app.delete('/comments/:id',  async(req, res)=>{
       const commentId = req.params.id
       const query = { commentId: commentId }
