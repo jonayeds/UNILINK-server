@@ -149,7 +149,7 @@ async function run() {
       } 
       const result=  usersCollection.updateOne(filter, updatedBookMark)
       res.send(result)
-
+   
     })
     app.delete('/comments/:id',  async(req, res)=>{
       const commentId = req.params.id
