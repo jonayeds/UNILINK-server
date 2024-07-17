@@ -147,9 +147,24 @@ async function run() {
           bookMarks:query.bookMarks
         }
       } 
-      const result=  usersCollection.updateOne(filter, updatedBookMark)
+      const result= await usersCollection.updateOne(filter, updatedBookMark)
       res.send(result)
-   
+    })
+    app.put('/delete/bookMark/:email/:id', async(req , res)=>{
+      const email = req.params.email
+      const postId = req.params.id
+      const followerAccounts = req.body.followerAccounts
+      followerAccounts.map( async(follower)=>{
+        const f = await usersCollection.findOne({email: follower})
+        const mark = f?.bookMarks?.filter(M=>  M.author+M.postId !==email+postId )
+        const updatedBookMark = {
+          $set:{
+            bookMarks:mark
+          }
+        }
+        const result = await usersCollection.updateOne({email:follower}, updatedBookMark)
+      })
+      
     })
     app.delete('/comments/:id',  async(req, res)=>{
       const commentId = req.params.id
