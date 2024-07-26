@@ -25,6 +25,7 @@ async function run() {
     const database = client.db("UNILINK");
     const usersCollection = database.collection("users");
     const commentsCollection= database.collection('comments')
+    const chatsCollection= database.collection('chats')
     // Connect the client to the server	(optional starting in v4.7)
     app.post("/users", async (req, res) => {
       const user = req.body;
@@ -71,6 +72,10 @@ async function run() {
       const result = await commentsCollection.find(queryA).toArray()
       const comments  = result.filter(comment=> comment.postId === parseInt(postId))
       res.send(comments)
+    })
+    app.get('/chats/:chatId', async(req ,res)=>{
+      const chatId = req.params.chatId
+      
     })
     app.put("/users/:email", async (req, res) => {
       const email = req.params.email;
