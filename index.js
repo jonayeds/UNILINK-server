@@ -105,17 +105,30 @@ async function run() {
       const id = req.params.id
       const query = req.body
       const filter = {_id : new ObjectId(id)}
-      const updatedUser = {
-        $set: {
-          fName: query.fName,
-          sName: query.sName,
-          fullName: query.fullName,
-          image: query.image,
-          bio: query.bio
+      if(query.image){
+        const updatedUser = {
+          $set: {
+            fName: query.fName,
+            sName: query.sName,
+            fullName: query.fullName,
+            image: query.image,
+            bio: query.bio
+          }
         }
+        const result = await usersCollection.updateOne(filter, updatedUser)
+        res.send(result)
+      }else{
+        const updatedUser = {
+          $set: {
+            fName: query.fName,
+            sName: query.sName,
+            fullName: query.fullName,
+            bio: query.bio
+          }
+        }
+        const result = await usersCollection.updateOne(filter, updatedUser)
+        res.send(result)
       }
-      const result = await usersCollection.updateOne(filter, updatedUser)
-      res.send(result)
     })
     app.put('/users/upload/:email', async(req, res)=>{
       const email = req.params.email
